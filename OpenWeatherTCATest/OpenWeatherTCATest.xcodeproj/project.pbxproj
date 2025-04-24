@@ -18,6 +18,10 @@
 		3F12F0D82DBA76F900507202 /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0D62DBA76F900507202 /* DataTransferService.swift */; };
 		3F12F0DB2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0DA2DBA79D700507202 /* WeatherResponseDTO.swift */; };
 		3F12F0DC2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0DA2DBA79D700507202 /* WeatherResponseDTO.swift */; };
+		3F12F0E02DBA7E9E00507202 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */; };
+		3F12F0E12DBA7E9E00507202 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */; };
+		3F12F0E62DBA819100507202 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0E52DBA818F00507202 /* WeatherRepository.swift */; };
+		3F12F0E72DBA819100507202 /* WeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F12F0E52DBA818F00507202 /* WeatherRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,11 +52,26 @@
 		3F12F0D62DBA76F900507202 /* DataTransferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferService.swift; sourceTree = "<group>"; };
 		3F12F0DA2DBA79D700507202 /* WeatherResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponseDTO.swift; sourceTree = "<group>"; };
 		3F12F0DE2DBA7A9D00507202 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		3F12F0E52DBA818F00507202 /* WeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3FB894932DBA856C005ED179 /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATest" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3F12F08B2DBA4F8600507202 /* OpenWeatherTCATest */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3F12F08E2DBA4F8600507202 /* OpenWeatherTCATest */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FB894932DBA856C005ED179 /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATest" target */,
+			);
 			path = OpenWeatherTCATest;
 			sourceTree = "<group>";
 		};
@@ -188,6 +207,7 @@
 		3F12F0C52DBA51A500507202 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -195,6 +215,7 @@
 		3F12F0C62DBA51A800507202 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				3F12F0E52DBA818F00507202 /* WeatherRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -383,7 +404,9 @@
 			files = (
 				3F12F0D72DBA76F900507202 /* DataTransferService.swift in Sources */,
 				3F12F0DC2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */,
+				3F12F0E72DBA819100507202 /* WeatherRepository.swift in Sources */,
 				3F12F0CC2DBA716C00507202 /* DefaultDataTransferService.swift in Sources */,
+				3F12F0E12DBA7E9E00507202 /* WeatherService.swift in Sources */,
 				3F12F0CE2DBA717100507202 /* HTTPClient.swift in Sources */,
 				3F12F0D02DBA717600507202 /* URLSessionHTTPClient.swift in Sources */,
 			);
@@ -394,6 +417,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F12F0CD2DBA716C00507202 /* DefaultDataTransferService.swift in Sources */,
+				3F12F0E62DBA819100507202 /* WeatherRepository.swift in Sources */,
+				3F12F0E02DBA7E9E00507202 /* WeatherService.swift in Sources */,
 				3F12F0CF2DBA717100507202 /* HTTPClient.swift in Sources */,
 				3F12F0DB2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */,
 				3F12F0D12DBA717600507202 /* URLSessionHTTPClient.swift in Sources */,
@@ -555,6 +580,7 @@
 				DEVELOPMENT_TEAM = TWVS59U6EK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenWeatherTCATest/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -589,6 +615,7 @@
 				DEVELOPMENT_TEAM = TWVS59U6EK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenWeatherTCATest/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
