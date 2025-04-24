@@ -42,3 +42,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+OpenWeatherTCATest/Core/Domain/UseCases/.DS_Store
+OpenWeatherTCATest/Core/Domain/.DS_Store
+OpenWeatherTCATest/Core/.DS_Store
+OpenWeatherTCATest/.DS_Store
+.DS_Store
