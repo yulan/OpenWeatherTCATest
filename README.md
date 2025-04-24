@@ -1,2 +1,152 @@
-# OpenWeatherTCATest
-OpenWeatherTCATest is an iOS application designed to demonstrate weather data fetching and UI interactions using the Composable Architecture (TCA) framework. This project integrates with the OpenWeather API to deliver real-time weather updates and provides a clean, modular architecture for state management and side effects.
+# OpenWeatherTCAApp
+
+## Overview
+
+**OpenWeatherTCAApp** is an iOS application built using **SwiftUI** and **The Composable Architecture (TCA)**. The app demonstrates Clean Architecture principles, focusing on modularity, testability, and adherence to SOLID principles. It consists of two main features:
+
+1. **Weather Screen**: Displays the current temperature and city name based on the user's location.
+2. **Instagram Story-Like View**: Mimics Instagram stories with auto-progressing and swipeable random images.
+
+---
+
+## Features
+
+### 1. **Weather Screen**
+- Fetches and displays the current temperature and city name using CoreLocation and a weather API (e.g., OpenWeatherMap).
+- Handles loading states and errors gracefully.
+- Provides a button to navigate to the Instagram story-like view.
+
+### 2. **Instagram Story-Like View**
+- Displays a series of random images, which auto-progress every 3 seconds.
+- Allows users to manually swipe between images.
+- Includes a progress bar at the top to indicate the auto-progress status of each image.
+- **Uses Unsplash API**: Fetches a collection of city-related random images from the Unsplash API to provide dynamic and visually appealing content.
+
+### 3. **The Composable Architecture (TCA) Integration**
+- State management for both features is implemented using TCA, ensuring modularity and testability.
+- Uses dependency injection for external services (e.g., weather API, random image service).
+
+---
+
+## Project Structure
+
+The project follows the **Clean Architecture** pattern:
+
+```
+OpenWeatherTCAApp/
+├── Core/
+│   ├── Domain/
+│   │   ├── Entities/
+│   │   │   ├── Weather.swift
+│   │   │   ├── Story.swift
+│   │   ├── UseCases/
+│   │       ├── FetchWeatherUseCase.swift
+│   │       ├── FetchStoriesUseCase.swift
+│   ├── Presentation/
+│   │   ├── WeatherFeature/
+│   │   │   ├── WeatherReducer.swift
+│   │   │   ├── WeatherView.swift
+│   │   ├── StoriesFeature/
+│   │       ├── StoriesReducer.swift
+│   │       ├── StoriesView.swift
+│   └── Data/
+│       ├── Repositories/
+│       │   ├── WeatherRepository.swift
+│       │   ├── StoryRepository.swift
+│       ├── Services/
+│           ├── WeatherService.swift
+│           ├── StoryService.swift
+```
+
+### Layers:
+- **Core/Domain**: Business logic and core entities (e.g., `Weather`, `Story`).
+- **Core/Presentation**: SwiftUI views and reducers for state management and UI rendering.
+- **Core/Data**: Repositories and services for interacting with external APIs.
+
+---
+
+## Installation
+
+### Prerequisites:
+- iOS 18.0+
+- Xcode 16+
+- Swift Package Manager (SPM) supported.
+
+### Steps:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/OpenWeatherTCAApp.git
+   cd OpenWeatherTCAApp
+   ```
+2. Open the project in Xcode:
+   ```bash
+   open OpenWeatherTCAApp.xcodeproj
+   ```
+3. Resolve dependencies using Swift Package Manager.
+4. Build and run the app on your simulator or device.
+
+---
+
+## Dependencies
+
+The app uses the following dependencies:
+- [The Composable Architecture (TCA)](https://github.com/pointfreeco/swift-composable-architecture): For state management and modular architecture.
+- [SwiftUI](https://developer.apple.com/xcode/swiftui/): For building the user interface.
+- [CoreLocation](https://developer.apple.com/documentation/corelocation): To fetch the user's current location.
+- [OpenWeatherMap API](https://openweathermap.org/api): To fetch weather data (or any other free weather API).
+- [Unsplash API](https://unsplash.com/developers): To fetch random city-related images for the Instagram story-like view.
+
+---
+
+## Usage
+
+### Weather Screen:
+1. Upon app launch, the screen fetches the user's location and displays the current temperature and city name.
+2. If there are any errors (e.g., location permissions denied), a user-friendly error message is shown.
+
+### Instagram Story-Like View:
+1. Navigate to this screen using the button on the Weather Screen.
+2. View random city-related images fetched from the Unsplash API that auto-progress every 3 seconds.
+3. Swipe manually to switch between images.
+4. Observe the progress bar at the top for each image.
+
+---
+
+## Clean Architecture Principles
+
+This app is built with the following principles in mind:
+- **Separation of Concerns**: Each layer (Domain, Data, Presentation) has a single responsibility.
+- **Dependency Injection**: Services and repositories are injected into use cases and reducers for flexibility and testability.
+- **Modularity**: Features are split into reusable reducers and views.
+- **SOLID Principles**: Ensures scalability and maintainability.
+- **DRY (Don't Repeat Yourself)**: Shared logic (e.g., API calls, error handling) is centralized in reusable components.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Description of changes"
+   ```
+4. Push your branch and create a pull request.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgements
+
+- [Point-Free](https://www.pointfree.co/) for The Composable Architecture.
+- [OpenWeatherMap](https://openweathermap.org/) for weather data.
+- [Unsplash](https://unsplash.com/) for providing free high-quality images.
