@@ -35,13 +35,20 @@ The project follows the **Clean Architecture** pattern:
 ```
 OpenWeatherTCAApp/
 ├── Core/
+│   ├── Infrastructure/
+│   │   ├── Networking/
+│   │   │   ├── DefaultDataTransferService.swift
+│   │   │   ├── HTTPClient.swift
+│   │   │   ├── URLSessionHTTPClient.swift
 │   ├── Domain/
 │   │   ├── Entities/
 │   │   │   ├── Weather.swift
 │   │   │   ├── Story.swift
 │   │   ├── UseCases/
-│   │       ├── FetchWeatherUseCase.swift
-│   │       ├── FetchStoriesUseCase.swift
+│   │   │   ├── Networking/
+│   │   │   │   ├── DataTransferService.swift
+│   │   │   ├── FetchWeatherUseCase.swift
+│   │   │   ├── FetchStoriesUseCase.swift
 │   ├── Presentation/
 │   │   ├── WeatherFeature/
 │   │   │   ├── WeatherReducer.swift
@@ -50,6 +57,8 @@ OpenWeatherTCAApp/
 │   │       ├── StoriesReducer.swift
 │   │       ├── StoriesView.swift
 │   └── Data/
+│       ├── DTOs/
+│       │   ├── WeatherResponseDTO.swift
 │       ├── Repositories/
 │       │   ├── WeatherRepository.swift
 │       │   ├── StoryRepository.swift
