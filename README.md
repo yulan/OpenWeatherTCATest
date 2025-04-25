@@ -34,37 +34,58 @@ The project follows the **Clean Architecture** pattern:
 
 ```
 OpenWeatherTCAApp/
+├── APP/
+│   ├── APIKeys.swift
+│   ├── AppReducer.swift
+│   ├── AppViews.swift
+│   ├── OpenWeatherTCATestApp.swfit
+│   ├── Resources/
+│   │   ├── Assets
+│   │   └── Info.plist
 ├── Core/
 │   ├── Infrastructure/
-│   │   ├── Networking/
-│   │   │   ├── DefaultDataTransferService.swift
-│   │   │   ├── HTTPClient.swift
-│   │   │   ├── URLSessionHTTPClient.swift
+│   │   └── Networking/
+│   │       ├── DefaultDataTransferService.swift
+│   │       ├── HTTPClient.swift
+│   │       └── URLSessionHTTPClient.swift
 │   ├── Domain/
 │   │   ├── Entities/
-│   │   │   ├── Weather.swift
-│   │   │   ├── Story.swift
+│   │   │    ├── Weather.swift
+│   │   │    └── Story.swift
 │   │   ├── UseCases/
-│   │   │   ├── Networking/
-│   │   │   │   ├── DataTransferService.swift
-│   │   │   ├── FetchWeatherUseCase.swift
-│   │   │   ├── FetchStoriesUseCase.swift
+│   │   └── Networking/
+│   │       ├── DataTransferService.swift
+│   │       ├── FetchWeatherUseCase.swift
+│   │       └── FetchStoriesUseCase.swift
 │   ├── Presentation/
+│   │   ├── LocationFeature/
+│   │   │   └── LocationReducer.swift
 │   │   ├── WeatherFeature/
+│   │   │   ├── Views
+│   │   │   │   ├── WeatherView.swift
+│   │   │   │   └── WeatherMetric.swift
 │   │   │   ├── WeatherReducer.swift
-│   │   │   ├── WeatherView.swift
-│   │   ├── StoriesFeature/
+│   │   │   └── WeatherViewModel.swift
+│   │   └── StoriesFeature/
 │   │       ├── StoriesReducer.swift
-│   │       ├── StoriesView.swift
+│   │       └── StoriesView.swift
 │   └── Data/
 │       ├── DTOs/
-│       │   ├── WeatherResponseDTO.swift
+│       │   └── WeatherResponseDTO.swift
 │       ├── Repositories/
+│       │   ├── LocationRepository.swift
 │       │   ├── WeatherRepository.swift
-│       │   ├── StoryRepository.swift
-│       ├── Services/
+│       │   └── StoryRepository.swift
+│       └── Services/
+│           ├── LocationManager/
+│           │   ├── LocationManagerDelegate.swift
+│           │   └── LocationManager.swift
+│           ├── MockServices/
+│           │   ├── MockLocationService.swift
+│           │   └── MockWeatherService.swift
+│           ├── LocationService.swift
 │           ├── WeatherService.swift
-│           ├── StoryService.swift
+│           └── StoryService.swift
 ```
 
 ### Layers:

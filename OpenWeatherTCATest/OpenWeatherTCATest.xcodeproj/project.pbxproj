@@ -95,7 +95,7 @@
 		3FB894932DBA856C005ED179 /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 3F12F08B2DBA4F8600507202 /* OpenWeatherTCATest */;
 		};
@@ -246,9 +246,8 @@
 		3F12F0C52DBA51A500507202 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3FB894E02DBBC242005ED179 /* LocationManager */,
 				3FB894DB2DBBB3F7005ED179 /* MockServices */,
-				3FB894CF2DBBA8FD005ED179 /* LocationManagerDelegate.swift */,
-				3FB894C92DBBA39E005ED179 /* LocationManager.swift */,
 				3FB894D22DBBAB1D005ED179 /* LocationService.swift */,
 				3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */,
 			);
@@ -323,6 +322,15 @@
 				3FB894D52DBBB3E0005ED179 /* MockWeatherService.swift */,
 			);
 			path = MockServices;
+			sourceTree = "<group>";
+		};
+		3FB894E02DBBC242005ED179 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				3FB894CF2DBBA8FD005ED179 /* LocationManagerDelegate.swift */,
+				3FB894C92DBBA39E005ED179 /* LocationManager.swift */,
+			);
+			path = LocationManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
