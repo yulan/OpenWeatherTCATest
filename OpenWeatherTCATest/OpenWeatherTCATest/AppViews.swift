@@ -19,6 +19,9 @@ struct AppView: View {
                 action: \.weather
             )
         )
+        .onAppear {
+            store.send(.location(.requestAuthorization))
+        }
     }
 }
 

@@ -106,49 +106,8 @@ struct WeatherView: View {
                 }
                 else {
                     ProgressView()
-                        .onAppear {
-                            viewStore.send(.fetchWeather(48.893732, 2.406402))
-                        }
                 }
             }
         }
     }
 }
-
-// MARK: - Equatable for WeatherReducer.State
-
-extension WeatherReducer.State: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.weather == rhs.weather &&
-        lhs.isFetchingWeather == rhs.isFetchingWeather &&
-        lhs.errorMessage == rhs.errorMessage &&
-        lhs.showStories == rhs.showStories
-    }
-}
-
-// MARK: - Equatable for WeatherReducer.Action
-
-extension WeatherReducer.Action: Equatable {
-    static func == (lhs: WeatherReducer.Action, rhs: WeatherReducer.Action) -> Bool {
-        switch (lhs, rhs) {
-        case let (.fetchWeather(latA, lonA), .fetchWeather(latB, lonB)):
-            return latA == latB && lonA == lonB
-
-        case let (.weatherResponse(.success(a)), .weatherResponse(.success(b))):
-            return a == b
-
-        case let (.weatherResponse(.failure(a)), .weatherResponse(.failure(b))):
-            return a.localizedDescription == b.localizedDescription
-
-        case let (.didReceiveError(a), .didReceiveError(b)):
-            return a == b
-
-        case let (.navigateToStories(a), .navigateToStories(b)):
-            return a == b
-            
-        default:
-            return false
-        }
-    }
-}
-

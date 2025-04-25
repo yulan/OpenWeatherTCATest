@@ -12,15 +12,35 @@ import ComposableArchitecture
 struct AppReducer {
     struct State {
         var weather = WeatherReducer.State()
+        var locationState = LocationReducer.State()
     }
 
     enum Action {
         case weather(WeatherReducer.Action)
+        case location(LocationReducer.Action)
     }
 
     var body: some ReducerOf<Self> {
+        Scope(state: \.locationState, action: \.location) {
+            LocationReducer()
+        }
         Scope(state: \.weather, action: \.weather) {
             WeatherReducer()
+        }
+        Reduce { _, action in
+            switch action {
+            case .location(.locationPermissionDenied(let errorMessage)):
+                return .send(.weather(.locationPermissionDenied(errorMessage)))
+                
+            case .location(.currentLocationResponse(.success(let location))):
+                return .send(.weather(.fetchWeather(location)))
+                
+            case .weather(_):
+                return .none
+                
+            default:
+                return .none
+            }
         }
     }
 }
