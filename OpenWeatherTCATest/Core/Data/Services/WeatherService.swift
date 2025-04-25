@@ -9,10 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 struct WeatherService: WeatherRepositoryProtocol {
-    func fetchWeather(
-        for lat: Double,
-        and lon: Double
-    ) async throws -> WeatherResponseDTO {
+    func fetchWeather(for lat: Double, and lon: Double) async throws -> WeatherResponseDTO {
         let apiKey = APIKeys.openWeather
         let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
         
@@ -21,26 +18,17 @@ struct WeatherService: WeatherRepositoryProtocol {
         }
         
         let userRequest = URLRequest(url: weatherUrl)
-        
-        // Use DefaultDataTransferService to fetch and decode the data
-        let dataTransferService = DefaultDataTransferService(
-            networkService: URLSessionHTTPClient(
-                session: .shared
-            )
-        )
-        
+        let networkService = URLSessionHTTPClient(session: .shared)
+        let dataTransferService = DefaultDataTransferService(networkService: networkService)
         let result: Result<WeatherResponseDTO,Error> = await dataTransferService.request(from: userRequest)
         
         switch result {
         case .success(let weather):
             /// (Optional) Clearing cache and cookies from previous URLSession
-            await URLSession.shared
-                .reset()
+            await URLSession.shared.reset()
             return weather
         case .failure(let error):
-            throw mapError(
-                error
-            )
+            throw mapError(error)
         }
     }
     

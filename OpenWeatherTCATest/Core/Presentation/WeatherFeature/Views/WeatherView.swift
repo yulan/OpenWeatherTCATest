@@ -101,6 +101,20 @@ struct WeatherView: View {
                             .padding()
                         }
                     }
+                    .navigationDestination(
+                        isPresented: viewStore.binding(
+                            get: \.showStories,
+                            send: WeatherReducer.Action.navigateToStories(true)
+                        )
+                    ) {
+                        StoriesView(store: Store(
+                            initialState: StoriesReducer.State(city: viewStore.weather?.name ?? "Paris" ),
+                            reducer: { StoriesReducer() }
+                        ))
+                        .onDisappear {
+                            viewStore.send(.navigateToStories(false))
+                        }
+                    }
                 } else if let errorMessage = viewStore.errorMessage {
                     Text(errorMessage)
                 }

@@ -45,6 +45,16 @@
 		3FB894D72DBBB3E0005ED179 /* MockWeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894D52DBBB3E0005ED179 /* MockWeatherService.swift */; };
 		3FB894D92DBBB3F2005ED179 /* MockLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894D82DBBB3F2005ED179 /* MockLocationService.swift */; };
 		3FB894DA2DBBB3F2005ED179 /* MockLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894D82DBBB3F2005ED179 /* MockLocationService.swift */; };
+		3FB894E22DBBC4F8005ED179 /* StoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E12DBBC4F7005ED179 /* StoryRepository.swift */; };
+		3FB894E32DBBC4F8005ED179 /* StoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E12DBBC4F7005ED179 /* StoryRepository.swift */; };
+		3FB894E52DBBC51A005ED179 /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E42DBBC514005ED179 /* StoryService.swift */; };
+		3FB894E62DBBC51A005ED179 /* StoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E42DBBC514005ED179 /* StoryService.swift */; };
+		3FB894E82DBBC5E7005ED179 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E72DBBC5E3005ED179 /* Story.swift */; };
+		3FB894E92DBBC5E7005ED179 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894E72DBBC5E3005ED179 /* Story.swift */; };
+		3FB894EB2DBBCCC9005ED179 /* MockStoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894EA2DBBCCC7005ED179 /* MockStoryService.swift */; };
+		3FB894EC2DBBCCC9005ED179 /* MockStoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894EA2DBBCCC7005ED179 /* MockStoryService.swift */; };
+		3FB894EE2DBBCE59005ED179 /* StoriesReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894ED2DBBCE59005ED179 /* StoriesReducer.swift */; };
+		3FB894F02DBBCE5E005ED179 /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894EF2DBBCE5E005ED179 /* StoriesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,13 +99,19 @@
 		3FB894D22DBBAB1D005ED179 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		3FB894D52DBBB3E0005ED179 /* MockWeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWeatherService.swift; sourceTree = "<group>"; };
 		3FB894D82DBBB3F2005ED179 /* MockLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationService.swift; sourceTree = "<group>"; };
+		3FB894E12DBBC4F7005ED179 /* StoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRepository.swift; sourceTree = "<group>"; };
+		3FB894E42DBBC514005ED179 /* StoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryService.swift; sourceTree = "<group>"; };
+		3FB894E72DBBC5E3005ED179 /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		3FB894EA2DBBCCC7005ED179 /* MockStoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStoryService.swift; sourceTree = "<group>"; };
+		3FB894ED2DBBCE59005ED179 /* StoriesReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesReducer.swift; sourceTree = "<group>"; };
+		3FB894EF2DBBCE5E005ED179 /* StoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoriesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		3FB894932DBA856C005ED179 /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATest" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Info.plist,
+				Info.plist,
 			);
 			target = 3F12F08B2DBA4F8600507202 /* OpenWeatherTCATest */;
 		};
@@ -221,6 +237,7 @@
 		3F12F0C02DBA513000507202 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				3FB894E72DBBC5E3005ED179 /* Story.swift */,
 				3F12F0C72DBA5ADD00507202 /* Weather.swift */,
 			);
 			path = Entities;
@@ -229,6 +246,8 @@
 		3F12F0C32DBA519300507202 /* StoriesFeature */ = {
 			isa = PBXGroup;
 			children = (
+				3FB894ED2DBBCE59005ED179 /* StoriesReducer.swift */,
+				3FB894EF2DBBCE5E005ED179 /* StoriesView.swift */,
 			);
 			path = StoriesFeature;
 			sourceTree = "<group>";
@@ -250,6 +269,7 @@
 				3FB894DB2DBBB3F7005ED179 /* MockServices */,
 				3FB894D22DBBAB1D005ED179 /* LocationService.swift */,
 				3F12F0DF2DBA7E9C00507202 /* WeatherService.swift */,
+				3FB894E42DBBC514005ED179 /* StoryService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -257,6 +277,7 @@
 		3F12F0C62DBA51A800507202 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				3FB894E12DBBC4F7005ED179 /* StoryRepository.swift */,
 				3FB894C62DBBA394005ED179 /* LocationRepository.swift */,
 				3F12F0E52DBA818F00507202 /* WeatherRepository.swift */,
 			);
@@ -318,6 +339,7 @@
 		3FB894DB2DBBB3F7005ED179 /* MockServices */ = {
 			isa = PBXGroup;
 			children = (
+				3FB894EA2DBBCCC7005ED179 /* MockStoryService.swift */,
 				3FB894D82DBBB3F2005ED179 /* MockLocationService.swift */,
 				3FB894D52DBBB3E0005ED179 /* MockWeatherService.swift */,
 			);
@@ -481,15 +503,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB894E62DBBC51A005ED179 /* StoryService.swift in Sources */,
 				3F12F0D72DBA76F900507202 /* DataTransferService.swift in Sources */,
 				3FB894A02DBA8D86005ED179 /* WeatherViewModel.swift in Sources */,
+				3FB894F02DBBCE5E005ED179 /* StoriesView.swift in Sources */,
+				3FB894EB2DBBCCC9005ED179 /* MockStoryService.swift in Sources */,
 				3FB894D32DBBAB1D005ED179 /* LocationService.swift in Sources */,
 				3F12F0DC2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */,
 				3FB894C12DBB9F8C005ED179 /* ColorExtension.swift in Sources */,
+				3FB894EE2DBBCE59005ED179 /* StoriesReducer.swift in Sources */,
+				3FB894E82DBBC5E7005ED179 /* Story.swift in Sources */,
 				3FB894DA2DBBB3F2005ED179 /* MockLocationService.swift in Sources */,
 				3FB894D62DBBB3E0005ED179 /* MockWeatherService.swift in Sources */,
 				3F12F0E72DBA819100507202 /* WeatherRepository.swift in Sources */,
 				3FB894D12DBBA8FD005ED179 /* LocationManagerDelegate.swift in Sources */,
+				3FB894E22DBBC4F8005ED179 /* StoryRepository.swift in Sources */,
 				3FB894CA2DBBA39E005ED179 /* LocationManager.swift in Sources */,
 				3FB894A32DBA8E07005ED179 /* Weather.swift in Sources */,
 				3FB8949B2DBA8D61005ED179 /* WeatherView.swift in Sources */,
@@ -518,13 +546,17 @@
 				3FB894A42DBA8E07005ED179 /* Weather.swift in Sources */,
 				3FB894D42DBBAB1D005ED179 /* LocationService.swift in Sources */,
 				3F12F0DB2DBA79D700507202 /* WeatherResponseDTO.swift in Sources */,
+				3FB894EC2DBBCCC9005ED179 /* MockStoryService.swift in Sources */,
 				3FB894CB2DBBA39E005ED179 /* LocationManager.swift in Sources */,
 				3F12F0D12DBA717600507202 /* URLSessionHTTPClient.swift in Sources */,
+				3FB894E32DBBC4F8005ED179 /* StoryRepository.swift in Sources */,
 				3FB894C02DBB9F8C005ED179 /* ColorExtension.swift in Sources */,
 				3FB894D02DBBA8FD005ED179 /* LocationManagerDelegate.swift in Sources */,
+				3FB894E52DBBC51A005ED179 /* StoryService.swift in Sources */,
 				3FB894D72DBBB3E0005ED179 /* MockWeatherService.swift in Sources */,
 				3F12F0D82DBA76F900507202 /* DataTransferService.swift in Sources */,
 				3FB894D92DBBB3F2005ED179 /* MockLocationService.swift in Sources */,
+				3FB894E92DBBC5E7005ED179 /* Story.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

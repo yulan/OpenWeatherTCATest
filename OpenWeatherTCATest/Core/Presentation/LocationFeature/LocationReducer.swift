@@ -28,7 +28,6 @@ struct LocationReducer {
     }
     
     @Dependency(\.locationRepository) var locationRepository
-    @Dependency(\.openURL) var openURL
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -53,24 +52,9 @@ struct LocationReducer {
                 if status == .authorizedWhenInUse || status == .authorizedAlways {
                     return .send(.requestCurrentLocation)
                 } else if status == .denied || status == .restricted {
-                    // 触发父级 reducer 捕捉此事件并弹出 alert
-                    //return .send(.delegate(.locationPermissionDenied))
                     return .send(.locationPermissionDenied("utilisateur donner pas droit"))
                 }
                 return .none
-                
-//            case .alert(.presented(.openSettingsTapped)):
-//                return .run { _ in
-//                    if let url = URL(string: UIApplication.openSettingsURLString) {
-//                        await openURL(url)
-//                    }
-//                }
-//                
-//            case .alert(.presented(.cancelTapped)):
-//                return .none
-//                
-//            case .alert:
-//                return .none
                 
             case .requestCurrentLocation:
                 guard state.authorizationStatus == .authorizedWhenInUse || state.authorizationStatus == .authorizedAlways else {

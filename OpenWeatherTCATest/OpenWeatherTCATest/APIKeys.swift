@@ -15,4 +15,12 @@ enum APIKeys {
         }
         return key
     }
+    
+    static var Unsplash: String {
+        guard let key = Bundle.main.infoDictionary?["UnsplashAPIKey"] as? String, !key.isEmpty else {
+            assertionFailure("❌ OpenWeatherAPIKey not found or empty in Info.plist")
+            return ""
+        }
+        return key
+    }
 }
