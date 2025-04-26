@@ -12,9 +12,13 @@ import ComposableArchitecture
 struct StoriesView: View {
     let store: StoreOf<StoriesReducer>
     @State private var timer: Timer?
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
+            let screenWidth = UIScreen.main.bounds.width
+            let screenHeight = UIScreen.main.bounds.height
+            
             ZStack {
                 if viewStore.isLoading {
                     ProgressView("Loading...")
@@ -33,6 +37,7 @@ struct StoriesView: View {
                             EmptyView()
                         }
                     }
+                    .frame(maxWidth: screenWidth, maxHeight: screenHeight)
                     .ignoresSafeArea()
                     
                     VStack {
@@ -48,7 +53,6 @@ struct StoriesView: View {
                                     ZStack(alignment: .leading) {
                                         Capsule()
                                             .fill(Color.white.opacity(0.3))
-                                        //.frame(width: barWidth, height: 4)
                                         
                                         if index == viewStore.currentIndex {
                                             Capsule()
@@ -70,12 +74,10 @@ struct StoriesView: View {
                         }
                         .frame(height: 4)
                         .padding(.horizontal)
-                        //.padding(.top, 12)
                         .zIndex(1)
                         
                         Spacer()
                     }
-//                    .ignoresSafeArea()
                 }
                 
                 HStack {
@@ -91,6 +93,24 @@ struct StoriesView: View {
                                     }
                                 }
                         )
+                }
+                // Close Button
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            print("dissmis button tapped")
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.white)
+                                .padding(.trailing, 16)
+                                .padding(.top, 10)
+                        }
+                    }
+                    Spacer()
                 }
             }
             .onAppear {
@@ -121,12 +141,5 @@ struct StoriesView: View {
             }
             viewStore.send(.updateProgress(progress))
         }
-    }
-    
-    private func getSafeAreaInsets() -> UIEdgeInsets? {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return nil
-        }
-        return windowScene.windows.first(where: { $0.isKeyWindow })?.safeAreaInsets
     }
 }

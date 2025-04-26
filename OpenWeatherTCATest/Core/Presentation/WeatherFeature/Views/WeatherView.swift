@@ -108,9 +108,10 @@ struct WeatherView: View {
                         )
                     ) {
                         StoriesView(store: Store(
-                            initialState: StoriesReducer.State(city: viewStore.weather?.name ?? "Paris" ),
+                            initialState: StoriesReducer.State(city: viewStore.weather?.name ?? "Paris"),
                             reducer: { StoriesReducer() }
                         ))
+                        .navigationBarHidden(true)
                         .onDisappear {
                             viewStore.send(.navigateToStories(false))
                         }
