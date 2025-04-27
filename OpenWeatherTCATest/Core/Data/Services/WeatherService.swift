@@ -23,11 +23,11 @@ struct WeatherService: WeatherRepositoryProtocol {
         let result: Result<WeatherResponseDTO,Error> = await dataTransferService.request(from: userRequest)
         
         switch result {
-        case .success(let weather):
+        case let .success(weather):
             /// (Optional) Clearing cache and cookies from previous URLSession
             await URLSession.shared.reset()
             return weather
-        case .failure(let error):
+        case let .failure(error):
             throw mapError(error)
         }
     }

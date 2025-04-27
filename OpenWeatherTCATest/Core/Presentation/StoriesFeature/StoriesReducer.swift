@@ -17,11 +17,13 @@ struct StoriesReducer {
         var currentIndex: Int = 0
         var progress: Double = 0.0
         var isLoading = false
+        var errorMessage: String?
     }
 
     enum Action {
         case fetch
         case fetchResponse(Result<[URL], Error>)
+        case dismissError
         case next
         case previous
         case updateProgress(Double)
@@ -49,9 +51,10 @@ struct StoriesReducer {
                 state.progress = 0.0
                 return .none
 
-            case .fetchResponse(.failure):
+            case let .fetchResponse(.failure(error)):
                 state.isLoading = false
                 state.stories = []
+                state.errorMessage = error.localizedDescription
                 return .none
 
             case let .updateProgress(value):
@@ -62,7 +65,7 @@ struct StoriesReducer {
                 if state.currentIndex < state.stories.count - 1 {
                     state.currentIndex += 1
                 } else {
-                    state.currentIndex = 0 // ✅ 循环播放（也可以变成 return .none 来停）
+                    state.currentIndex = 0
                 }
                 state.progress = 0.0
                 return .none
@@ -74,6 +77,10 @@ struct StoriesReducer {
                     state.currentIndex = 0
                 }
                 state.progress = 0.0
+                return .none
+                
+            case .dismissError:
+                state.errorMessage = nil
                 return .none
             }
         }

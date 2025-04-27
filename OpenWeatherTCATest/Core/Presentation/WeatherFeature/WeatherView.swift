@@ -12,7 +12,7 @@ struct WeatherView: View {
     @Bindable var store: StoreOf<WeatherReducer>
     @StateObject private var orientationManager = DeviceOrientationManager()
     
-    let weatherIconMap: [String: String] = [
+    private let weatherIconMap: [String: String] = [
         "01d": "sun.max.fill",
         "02d": "cloud.sun.fill",
         "03d": "cloud.fill",

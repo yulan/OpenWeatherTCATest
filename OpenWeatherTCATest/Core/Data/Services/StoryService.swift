@@ -36,16 +36,52 @@ struct StoryService: StoryRepositoryProtocol {
             let result: Result<UnsplashPhoto, Error> = await dataTransferService.request(from: request)
 
             switch result {
-            case .success(let photo):
+            case let .success(photo):
                 if let url = URL(string: photo.urls.regular) {
                     urls.append(url)
                 }
-            case .failure:
-                throw URLError(.cannotLoadFromNetwork)
+            case let .failure(error):
+                throw mapError(error)
             }
         }
-
         return urls
+    }
+    
+    private func mapError(_ error: Error) -> StoryAPIClientError {
+        if let urlError = error as? URLError {
+            switch urlError.code {
+            case .badURL:
+                return .invalidURL
+            case .cannotLoadFromNetwork:
+                return .networkError
+            default:
+                return .unknown
+            }
+        } else if let _ = error as? DecodingError {
+            return .decodingFailed
+        } else {
+            return .unknown
+        }
+    }
+    
+    enum StoryAPIClientError: Error, Equatable {
+        case invalidURL
+        case networkError
+        case decodingFailed
+        case unknown
+        
+        var localizedDescription: String {
+            switch self {
+            case .invalidURL:
+                return "The URL provided is invalid."
+            case .networkError:
+                return "There was a network error while fetching the data."
+            case .decodingFailed:
+                return "Failed to decode the data from the server."
+            case .unknown:
+                return "An unknown error occurred."
+            }
+        }
     }
     
 }

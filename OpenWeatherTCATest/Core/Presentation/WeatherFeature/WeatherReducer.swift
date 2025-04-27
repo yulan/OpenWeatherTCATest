@@ -66,7 +66,6 @@ struct WeatherReducer {
             switch action {
             case let .locationPermissionDenied(errorMessage):
                 state.alert = AlertState {
-                    //TextState("Location Access Denied")
                     TextState(errorMessage)
                 } actions: {
                     ButtonState(role: .cancel, action: .cancelTapped) {
@@ -131,20 +130,19 @@ struct WeatherReducer {
                     }
                 }
                 
-            case .weatherResponse(.success(let weather)):
+            case let .weatherResponse(.success(weather)):
                 state.weather = weather
                 state.errorType = nil
                 state.isFetchingWeather = false
                 return .none
                 
-            case .weatherResponse(.failure(let error)):
+            case let .weatherResponse(.failure(error)):
                 state.isFetchingWeather = false
                 state.errorType = error
                 return .none
                 
-            case .navigateToStories(let show):
+            case let .navigateToStories(show):
                 state.showStories = show
-                //print("city name: \(cityName)")
                 return .none
                 
             }

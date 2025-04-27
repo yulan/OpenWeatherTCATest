@@ -275,6 +275,7 @@
 				3FB894BC2DBB87E8005ED179 /* Views */,
 				3FB8949F2DBA8D86005ED179 /* WeatherViewModel.swift */,
 				3FB894A12DBA8D8E005ED179 /* WeatherReducer.swift */,
+				3FB8949A2DBA8D61005ED179 /* WeatherView.swift */,
 			);
 			path = WeatherFeature;
 			sourceTree = "<group>";
@@ -361,7 +362,6 @@
 				3F2D6E832DBECCE8000E7A43 /* WeatherMetricsView.swift */,
 				3F2D6E812DBECCD9000E7A43 /* WeatherMainInfoView.swift */,
 				3F2D6E7F2DBEA8D4000E7A43 /* RetryButton.swift */,
-				3FB8949A2DBA8D61005ED179 /* WeatherView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

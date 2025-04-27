@@ -12,7 +12,9 @@ import ComposableArchitecture
 struct StoriesView: View {
     let store: StoreOf<StoriesReducer>
     @State private var timer: Timer?
+    @StateObject private var orientationManager = DeviceOrientationManager()
     @Environment(\.dismiss) private var dismiss
+    private let isPad = UIDevice.isPad
     
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
@@ -73,43 +75,56 @@ struct StoriesView: View {
                             }
                         }
                         .frame(height: 4)
+                        .padding(.top, orientationManager.isLandscape ? 24 : 0)
                         .padding(.horizontal)
                         .zIndex(1)
                         
                         Spacer()
                     }
-                }
-                
-                HStack {
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .gesture(
-                            DragGesture()
-                                .onEnded { value in
-                                    if value.translation.width > 50 {
-                                        viewStore.send(.previous)
-                                    } else if value.translation.width < -50 {
-                                        viewStore.send(.next)
-                                    }
-                                }
-                        )
-                }
-                // Close Button
-                VStack {
+                    
                     HStack {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .gesture(
+                                DragGesture()
+                                    .onEnded { value in
+                                        if value.translation.width > 50 {
+                                            viewStore.send(.previous)
+                                        } else if value.translation.width < -50 {
+                                            viewStore.send(.next)
+                                        }
+                                    }
+                            )
+                    }
+                    // Close Button
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.white)
+                                    .padding(.trailing, 16)
+                                    .padding(.top, 10)
+                            }
+                        }
                         Spacer()
-                        Button(action: {
+                    }
+                }
+                else {
+                    let errorMessage: String = viewStore.errorMessage ?? ""
+                    VStack {
+                        Text("‼️ \(errorMessage)")
+                            .foregroundColor(.red)
+                            .padding()
+                        Button("Dismiss") {
+                            viewStore.send(.dismissError)
                             dismiss()
-                        }) {
-                            Image(systemName: "xmark.circle.fill")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(.white)
-                                .padding(.trailing, 16)
-                                .padding(.top, 10)
                         }
                     }
-                    Spacer()
                 }
             }
             .onAppear {
