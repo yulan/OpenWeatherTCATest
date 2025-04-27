@@ -10,6 +10,7 @@ import ComposableArchitecture
 
 struct WeatherView: View {
     @Bindable var store: StoreOf<WeatherReducer>
+    @StateObject private var orientationManager = DeviceOrientationManager()
     
     let weatherIconMap: [String: String] = [
         "01d": "sun.max.fill",
@@ -24,6 +25,7 @@ struct WeatherView: View {
     ]
     
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    private let isPad = UIDevice.isPad
     
     var body: some View {
         WithViewStore(store, observe: \.self) { viewStore in
@@ -40,65 +42,54 @@ struct WeatherView: View {
                             endPoint: .bottom
                         )
                         .ignoresSafeArea()
+                    
+                        
                         ScrollView {
-                            VStack(spacing: 24) {
-                                // Top section
-                                VStack(spacing: 12) {
-                                    
-                                    Text(viewModel.locationName)
-                                        .font(.largeTitle)
-                                        .bold()
-                                        .foregroundColor(.white)
-                                    
-                                    if let icon = viewModel.conditionIcons.first {
-                                        Image(systemName: weatherIconMap[icon] ?? "sun.max.fill")
-                                            .font(.system(size: 64))
-                                            .foregroundColor(.white)
-                                    }
-                                    
-                                    Text(viewModel.temperature)
-                                        .font(.system(size: 56, weight: .semibold))
-                                        .foregroundColor(.white)
-                                    
-                                    Text(viewModel.conditionDescription)
-                                        .font(.title3)
-                                        .foregroundColor(.white.opacity(0.8))
+                            
+                            Spacer(minLength: 50)
+                            
+                            if orientationManager.isLandscape {
+                                HStack(alignment: .center, spacing: 32) {
+                                    WeatherMainInfoView(
+                                        viewModel: viewModel,
+                                        isPad: isPad,
+                                        weatherIconMap: weatherIconMap
+                                    )
+                                    WeatherMetricsView(
+                                        viewModel: viewModel,
+                                        isPad: isPad,
+                                        columns: columns
+                                    )
                                 }
-                                
-                                // Metrics grid
-                                LazyVGrid(columns: columns, spacing: 16) {
-                                    WeatherMetric(title: "FEELS LIKE", value: viewModel.feelsLikeTemperature)
-                                    WeatherMetric(title: "MIN", value: viewModel.minTemperature)
-                                    WeatherMetric(title: "MAX", value: viewModel.maxTemperature)
-                                    WeatherMetric(title: "PRESSURE", value: viewModel.pressure)
-                                    WeatherMetric(title: "HUMIDITY", value: viewModel.humidity)
-                                    WeatherMetric(title: "WIND", value: "\(viewModel.windSpeed) \(viewModel.windDirection)")
-                                    WeatherMetric(title: "CLOUDS", value: viewModel.cloudiness)
-                                }
-                                
-                                // Footer info
-                                HStack(spacing: 16) {
-                                    Text(viewModel.country)
-                                    Label(viewModel.sunriseTime, systemImage: "sunrise")
-                                    Label(viewModel.sunsetTime, systemImage: "sunset")
-                                }
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                                
-                                // Stories button
-                                Button(action: {
-                                    viewStore.send(.navigateToStories(true))
-                                }) {
-                                    Text("View Stories")
-                                        .fontWeight(.semibold)
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.blue.opacity(0.1))
-                                        .cornerRadius(12)
-                                        .foregroundColor(.white)
+                            } else {
+                                VStack(spacing: 24) {
+                                    WeatherMainInfoView(
+                                        viewModel: viewModel,
+                                        isPad: isPad,
+                                        weatherIconMap: weatherIconMap
+                                    )
+                                    WeatherMetricsView(
+                                        viewModel: viewModel,
+                                        isPad: isPad,
+                                        columns: columns
+                                    )
                                 }
                             }
-                            .padding()
+                                
+                            Spacer(minLength: 20)
+                            
+                            Button(action: {
+                                viewStore.send(.navigateToStories(true))
+                            }) {
+                                Text("View Stories")
+                                    .fontWeight(.semibold)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(12)
+                                    .foregroundColor(.white)
+                                    .font(.system(size: isPad ? 28 : 18, weight: .semibold))
+                            }
                         }
                     }
                     .navigationDestination(
@@ -116,26 +107,22 @@ struct WeatherView: View {
                             viewStore.send(.navigateToStories(false))
                         }
                     }
-                } else if let errorMessage = viewStore.errorMessage {
+                } else if let errorType = viewStore.errorType  {
                     VStack(spacing: 16) {
-                        Text(errorMessage)
+                        Text(errorType.localizedDescription)
                             .foregroundColor(.red)
                             .multilineTextAlignment(.center)
                         
-                        // 添加重新检查用户许可的按钮
-                        Button(action: {
-                            viewStore.send(.needRequestAuthorization)
-                        }) {
-                            Text("Retry Permissions")
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                        }
+                        retryButton(
+                            for: errorType,
+                            viewStore: viewStore,
+                            isPad: isPad
+                        )
                     }
-                }
-                else {
-                    ProgressView()
+                } else {
+                    VStack {
+                        WeatherSkeletonView(columns: columns)
+                    }
                 }
             }
             .alert(
@@ -144,6 +131,30 @@ struct WeatherView: View {
                     action: \.alert
                 )
             )
+        }
+    }
+    
+    private func retryButton(
+        for errorType: WeatherError,
+        viewStore: ViewStoreOf<WeatherReducer>,
+        isPad: Bool
+    ) -> some View {
+        switch errorType {
+        case .api, .networkFailure, .unknown:
+            return RetryButton(
+                title: "Retry",
+                backgroundColor: .blue, isPad: isPad
+            ) {
+                viewStore.send(.retryLastFetchWeather)
+            }
+            
+        case .permissionDenied:
+            return RetryButton(
+                title: "Grant Permissions",
+                backgroundColor: .blue, isPad: isPad
+            ) {
+                viewStore.send(.retryRequestAuthorization)
+            }
         }
     }
 }

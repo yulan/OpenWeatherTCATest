@@ -9,9 +9,24 @@ import SwiftUI
 import ComposableArchitecture
 import CoreLocation
 
-enum WeatherFetchError: Error {
+enum WeatherError: Error {
     case api(Error)
-    case unknown(Error)
+    case networkFailure
+    case permissionDenied
+    case unknown(String)
+    
+    var localizedDescription: String {
+        switch self {
+        case .api(let error):
+            return "API Error: \(error.localizedDescription)"
+        case .networkFailure:
+            return "Network connection failed. Please check your internet connection."
+        case .permissionDenied:
+            return "Location permissions are required to fetch the weather."
+        case .unknown(let info):
+            return "An unknown error occurred: \(info)"
+        }
+    }
 }
 
 @Reducer
@@ -19,32 +34,33 @@ struct WeatherReducer {
     @ObservableState
     struct State {
         var weather: Weather? = nil
+        var lastLocation: CLLocation?
         var isFetchingWeather: Bool = false
-        var errorMessage: String?
+        var errorType: WeatherError?
         var showStories = false
         @Presents var alert: AlertState<Action.Alert>?
     }
-
+    
     @CasePathable
     enum Action {
         case locationPermissionDenied(String)
-        case needRequestAuthorization
+        case retryRequestAuthorization
         case fetchWeather(CLLocation)
-        case weatherResponse(Result<Weather, WeatherFetchError>)
-        case didReceiveError(String)
+        case retryLastFetchWeather
+        case weatherResponse(Result<Weather, WeatherError>)
         case navigateToStories(Bool)
         case alert(PresentationAction<Alert>)
-
+        
         @CasePathable
         enum Alert {
             case openSettingsTapped
             case cancelTapped
         }
     }
-
+    
     @Dependency(\.weatherRepository) var weatherRepository
     @Dependency(\.openURL) var openURL
-
+    
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -62,11 +78,10 @@ struct WeatherReducer {
                 } message: {
                     TextState("Please enable location permissions in Settings to use weather features.")
                 }
-                state.errorMessage = errorMessage
-                print("locationPermissionDenied errorMessage \(errorMessage)")
+                state.errorType = WeatherError.permissionDenied
                 return .none
                 
-            case .needRequestAuthorization:
+            case .retryRequestAuthorization:
                 return .none
                 
             case .alert(.presented(.openSettingsTapped)):
@@ -79,13 +94,14 @@ struct WeatherReducer {
             case .alert(.presented(.cancelTapped)):
                 state.alert = nil
                 return .none
-
+                
             case .alert:
                 return .none
                 
             case .fetchWeather(let location):
                 state.isFetchingWeather = true
-                state.errorMessage = nil
+                state.errorType = nil
+                state.lastLocation = location
                 return .run { send in
                     do {
                         let lat = location.coordinate.latitude
@@ -93,49 +109,62 @@ struct WeatherReducer {
                         let weatherDTO = try await weatherRepository.fetchWeather(for: lat, and: lon)
                         let weather = weatherDTO.toDomain()
                         await send(.weatherResponse(.success(weather)))
-                    } catch let error as WeatherFetchError {
+                    } catch let error as WeatherError {
                         await send(.weatherResponse(.failure(error)))
                     }
                 }
-
+                
+            case .retryLastFetchWeather:
+                guard let lastlocation = state.lastLocation else {
+                    state.errorType = WeatherError.unknown("The lastLocation should not be nil !!")
+                    return .none
+                }
+                return .run { send in
+                    do {
+                        let lat = lastlocation.coordinate.latitude
+                        let lon = lastlocation.coordinate.longitude
+                        let weatherDTO = try await weatherRepository.fetchWeather(for: lat, and: lon)
+                        let weather = weatherDTO.toDomain()
+                        await send(.weatherResponse(.success(weather)))
+                    } catch let error as WeatherError {
+                        await send(.weatherResponse(.failure(error)))
+                    }
+                }
+                
             case .weatherResponse(.success(let weather)):
                 state.weather = weather
+                state.errorType = nil
                 state.isFetchingWeather = false
-                return .none
-
-            case .weatherResponse(.failure(let error)):
-                state.isFetchingWeather = false
-                state.errorMessage = "Failed to fetch weather: \(error.localizedDescription)"
                 return .none
                 
-            case .didReceiveError(let message):
-                state.errorMessage = message
+            case .weatherResponse(.failure(let error)):
+                state.isFetchingWeather = false
+                state.errorType = error
                 return .none
                 
             case .navigateToStories(let show):
                 state.showStories = show
                 //print("city name: \(cityName)")
                 return .none
+                
             }
         }
         .ifLet(\.$alert, action: \.alert)
     }
 }
 
-// MARK: - Equatable for WeatherReducer.State
-
+// MARK: - State Equatable
 extension WeatherReducer.State: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.weather == rhs.weather &&
         lhs.isFetchingWeather == rhs.isFetchingWeather &&
-        lhs.errorMessage == rhs.errorMessage &&
-        lhs.showStories == rhs.showStories //&&
-        //lhs.alert == rhs.alert
+        lhs.errorType == rhs.errorType &&
+        lhs.showStories == rhs.showStories &&
+        lhs.alert == rhs.alert
     }
 }
 
-// MARK: - Equatable for WeatherReducer.Action
-
+// MARK: - Action Equatable
 extension WeatherReducer.Action: Equatable {
     static func == (lhs: WeatherReducer.Action, rhs: WeatherReducer.Action) -> Bool {
         switch (lhs, rhs) {
@@ -144,23 +173,37 @@ extension WeatherReducer.Action: Equatable {
             
         case let (.fetchWeather(a), .fetchWeather(b)):
             return a.coordinate.latitude == b.coordinate.latitude &&
-                   a.coordinate.longitude == b.coordinate.longitude
-
+            a.coordinate.longitude == b.coordinate.longitude
+            
         case let (.weatherResponse(.success(a)), .weatherResponse(.success(b))):
             return a == b
-
+            
         case let (.weatherResponse(.failure(a)), .weatherResponse(.failure(b))):
             return a.localizedDescription == b.localizedDescription
-
-        case let (.didReceiveError(a), .didReceiveError(b)):
-            return a == b
-
+            
         case let (.navigateToStories(a), .navigateToStories(b)):
             return a == b
             
-//        case (.alert, .alert):
-//            return true
+        case (.alert, .alert):
+            return true
+            
+        default:
+            return false
+        }
+    }
+}
 
+// MARK: - WeatherError Equatable
+extension WeatherError: Equatable {
+    static func == (lhs: WeatherError, rhs: WeatherError) -> Bool {
+        switch (lhs, rhs) {
+        case (.networkFailure, .networkFailure),
+            (.permissionDenied, .permissionDenied):
+            return true
+        case (let .api(lhsError), let .api(rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+        case (let .unknown(lhsInfo), let .unknown(rhsInfo)):
+            return lhsInfo == rhsInfo
         default:
             return false
         }

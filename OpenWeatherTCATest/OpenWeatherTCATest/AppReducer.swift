@@ -35,7 +35,7 @@ struct AppReducer {
             case .location(.currentLocationResponse(.success(let location))):
                 return .send(.weather(.fetchWeather(location)))
                 
-            case .weather(.needRequestAuthorization):
+            case .weather(.retryRequestAuthorization):
                 return .send(.location(.requestAuthorization))
                 
             default:
