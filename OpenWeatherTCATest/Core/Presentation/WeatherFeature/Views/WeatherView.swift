@@ -117,12 +117,33 @@ struct WeatherView: View {
                         }
                     }
                 } else if let errorMessage = viewStore.errorMessage {
-                    Text(errorMessage)
+                    VStack(spacing: 16) {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                        
+                        // 添加重新检查用户许可的按钮
+                        Button(action: {
+                            viewStore.send(.needRequestAuthorization)
+                        }) {
+                            Text("Retry Permissions")
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                        }
+                    }
                 }
                 else {
                     ProgressView()
                 }
             }
+            .alert(
+                $store.scope(
+                    state: \.alert,
+                    action: \.alert
+                )
+            )
         }
     }
 }

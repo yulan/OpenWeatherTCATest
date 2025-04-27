@@ -99,7 +99,6 @@ struct StoriesView: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            print("dissmis button tapped")
                             dismiss()
                         }) {
                             Image(systemName: "xmark.circle.fill")

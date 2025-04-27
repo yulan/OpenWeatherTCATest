@@ -1,36 +1,45 @@
+//
+//  WeatherReducer.swift
+//  OpenWeatherTCATest
+//
+//  Created by Lan YU on 21/04/2025.
+//
+
 import SwiftUI
 import ComposableArchitecture
 import CoreLocation
 
 enum WeatherFetchError: Error {
-    case api(Error)      // 天气 API 错误
-    case unknown(Error)  // 未知错误
+    case api(Error)
+    case unknown(Error)
 }
 
 @Reducer
 struct WeatherReducer {
+    @ObservableState
     struct State {
         var weather: Weather? = nil
         var isFetchingWeather: Bool = false
         var errorMessage: String?
         var showStories = false
-//        @PresentationState var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Action.Alert>?
     }
 
     @CasePathable
     enum Action {
         case locationPermissionDenied(String)
+        case needRequestAuthorization
         case fetchWeather(CLLocation)
         case weatherResponse(Result<Weather, WeatherFetchError>)
         case didReceiveError(String)
         case navigateToStories(Bool)
-//        case alert(PresentationAction<Alert>)
+        case alert(PresentationAction<Alert>)
 
-//        @CasePathable
-//        enum Alert {
-//            case openSettingsTapped
-//            case cancelTapped
-//        }
+        @CasePathable
+        enum Alert {
+            case openSettingsTapped
+            case cancelTapped
+        }
     }
 
     @Dependency(\.weatherRepository) var weatherRepository
@@ -40,31 +49,39 @@ struct WeatherReducer {
         Reduce { state, action in
             switch action {
             case let .locationPermissionDenied(errorMessage):
-//                state.alert = AlertState {
-//                    TextState("Location Access Denied")
-//                } actions: {
-//                    ButtonState(role: .cancel, action: .cancelTapped) {
-//                        TextState("Cancel")
-//                    }
-//                    ButtonState(action: .openSettingsTapped) {
-//                        TextState("Open Settings")
-//                    }
-//                } message: {
-//                    TextState("Please enable location permissions in Settings to use weather features.")
-//                }
+                state.alert = AlertState {
+                    //TextState("Location Access Denied")
+                    TextState(errorMessage)
+                } actions: {
+                    ButtonState(role: .cancel, action: .cancelTapped) {
+                        TextState("Cancel")
+                    }
+                    ButtonState(action: .openSettingsTapped) {
+                        TextState("Open Settings")
+                    }
+                } message: {
+                    TextState("Please enable location permissions in Settings to use weather features.")
+                }
                 state.errorMessage = errorMessage
                 print("locationPermissionDenied errorMessage \(errorMessage)")
                 return .none
                 
-//            case .alert(.presented(.openSettingsTapped)):
-//                return .run { _ in
-//                    if let url = URL(string: UIApplication.openSettingsURLString) {
-//                        await openURL(url)
-//                    }
-//                }
-//
-//            case .alert:
-//                return .none
+            case .needRequestAuthorization:
+                return .none
+                
+            case .alert(.presented(.openSettingsTapped)):
+                return .run { _ in
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        await openURL(url)
+                    }
+                }
+                
+            case .alert(.presented(.cancelTapped)):
+                state.alert = nil
+                return .none
+
+            case .alert:
+                return .none
                 
             case .fetchWeather(let location):
                 state.isFetchingWeather = true
@@ -101,7 +118,7 @@ struct WeatherReducer {
                 return .none
             }
         }
-//        .ifLet(\.$alert, action: \.alert)
+        .ifLet(\.$alert, action: \.alert)
     }
 }
 
