@@ -7,8 +7,7 @@
 
 import Foundation
 
-public struct Story: Equatable, Identifiable {
-    public let id: UUID = UUID()
+public struct Story: Equatable {
     let imageURL: URL
 }
 

@@ -11,6 +11,8 @@ import ComposableArchitecture
 @Reducer
 struct StoriesReducer {
 
+    let fetchRandomPhotoNb = 5
+    
     struct State: Equatable {
         var city: String
         var stories: [Story] = []
@@ -39,7 +41,7 @@ struct StoriesReducer {
                 state.isLoading = true
                 return .run { [city = state.city] send in
                     let result = await Result {
-                        try await storyRepository.fetchRandomPhotoURLs(for: city, with: 5)
+                        try await storyRepository.fetchRandomPhotoURLs(for: city, with: fetchRandomPhotoNb)
                     }
                     await send(.fetchResponse(result))
                 }
@@ -83,6 +85,30 @@ struct StoriesReducer {
                 state.errorMessage = nil
                 return .none
             }
+        }
+    }
+}
+
+extension StoriesReducer.Action: Equatable {
+    public static func == (lhs: StoriesReducer.Action, rhs: StoriesReducer.Action) -> Bool {
+        switch (lhs, rhs) {
+        case (.fetch, .fetch),
+             (.dismissError, .dismissError),
+             (.next, .next),
+             (.previous, .previous):
+            return true
+
+        case let (.updateProgress(a), .updateProgress(b)):
+            return a == b
+
+        case let (.fetchResponse(.success(a)), .fetchResponse(.success(b))):
+            return a == b
+
+        case (.fetchResponse(.failure), .fetchResponse(.failure)):
+            return true
+
+        default:
+            return false
         }
     }
 }

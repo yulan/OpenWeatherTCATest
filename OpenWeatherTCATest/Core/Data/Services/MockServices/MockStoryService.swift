@@ -8,16 +8,30 @@
 import Foundation
 
 struct MockStoryService: StoryRepositoryProtocol {
-    var fetchRandomPhotoURLsHandler: (String, Int) async throws -> [URL] = { _, _ in
-        return [
-            URL(string: "https://example.com/photo1.jpg")!,
-            URL(string: "https://example.com/photo2.jpg")!,
-            URL(string: "https://example.com/photo3.jpg")!
-        ]
+    var fetchRandomPhotoURLsHandler: (
+        String,
+        Int
+    ) async throws -> [URL] = {
+        city,
+        photosCount in
+        guard photosCount > 0 else {
+            return []
+        }
+        return (1...photosCount).compactMap {
+            URL(
+                string: "https://example.com/\(city)_photo\($0).jpg"
+            )
+        }
     }
-
-    func fetchRandomPhotoURLs(for city: String, with photosCount: Int) async throws -> [URL] {
-        try await fetchRandomPhotoURLsHandler(city, photosCount)
+    
+    func fetchRandomPhotoURLs(
+        for city: String,
+        with photosCount: Int
+    ) async throws -> [URL] {
+        try await fetchRandomPhotoURLsHandler(
+            city,
+            photosCount
+        )
     }
 }
 
@@ -25,16 +39,22 @@ struct MockStoryService: StoryRepositoryProtocol {
 
 extension MockStoryService {
     static let successMock = MockStoryService(
-        fetchRandomPhotoURLsHandler: { city, photosCount in
-            guard photosCount > 0 else { return [] }
-            return (1...photosCount).map { index in
-                URL(string: "https://example.com/\(city)_photo\(index).jpg")!
+        fetchRandomPhotoURLsHandler: {
+            city,
+            photosCount in
+            guard photosCount > 0 else {
+                return []
+            }
+            return (1...photosCount).compactMap {
+                URL(
+                    string: "https://example.com/\(city)_photo\($0).jpg"
+                )
             }
         }
     )
     
     static let failureMock = MockStoryService(
-        fetchRandomPhotoURLsHandler: { _, _ in
+        fetchRandomPhotoURLsHandler: {_,_ in
             throw URLError(.cannotLoadFromNetwork)
         }
     )
