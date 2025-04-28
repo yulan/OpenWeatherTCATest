@@ -134,6 +134,14 @@
 			);
 			target = 3F12F08B2DBA4F8600507202 /* OpenWeatherTCATest */;
 		};
+		3FE91EBF2DBF8D0A00DC970C /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATestTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				APIKeys.swift,
+				AppReducer.swift,
+			);
+			target = 3F12F09A2DBA4F8900507202 /* OpenWeatherTCATestTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -141,6 +149,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				3FB894932DBA856C005ED179 /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATest" target */,
+				3FE91EBF2DBF8D0A00DC970C /* Exceptions for "OpenWeatherTCATest" folder in "OpenWeatherTCATestTests" target */,
 			);
 			path = OpenWeatherTCATest;
 			sourceTree = "<group>";

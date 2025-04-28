@@ -80,5 +80,4 @@ extension DependencyValues {
 
 private enum WeatherRepositoryKey: DependencyKey {
     static let liveValue: WeatherRepositoryProtocol = WeatherService()
-    static let testValue: WeatherRepositoryProtocol = MockWeatherService()
 }

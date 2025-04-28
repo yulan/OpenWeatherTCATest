@@ -118,6 +118,8 @@ struct WeatherReducer {
                     state.errorType = WeatherError.unknown("The lastLocation should not be nil !!")
                     return .none
                 }
+                
+                state.isFetchingWeather = true
                 return .run { send in
                     do {
                         let lat = lastlocation.coordinate.latitude
