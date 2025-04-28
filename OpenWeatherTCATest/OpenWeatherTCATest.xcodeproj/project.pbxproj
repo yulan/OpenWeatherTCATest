@@ -63,6 +63,10 @@
 		3FB894EC2DBBCCC9005ED179 /* MockStoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894EA2DBBCCC7005ED179 /* MockStoryService.swift */; };
 		3FB894EE2DBBCE59005ED179 /* StoriesReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894ED2DBBCE59005ED179 /* StoriesReducer.swift */; };
 		3FB894F02DBBCE5E005ED179 /* StoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894EF2DBBCE5E005ED179 /* StoriesView.swift */; };
+		3FE91E882DBEEFB200DC970C /* LocationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894CD2DBBA3D0005ED179 /* LocationReducer.swift */; };
+		3FE91E892DBEEFBB00DC970C /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8949F2DBA8D86005ED179 /* WeatherViewModel.swift */; };
+		3FE91E8A2DBEEFC200DC970C /* WeatherReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894A12DBA8D8E005ED179 /* WeatherReducer.swift */; };
+		3FE91E8B2DBEEFC900DC970C /* StoriesReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB894ED2DBBCE59005ED179 /* StoriesReducer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,7 +279,6 @@
 				3FB894BC2DBB87E8005ED179 /* Views */,
 				3FB8949F2DBA8D86005ED179 /* WeatherViewModel.swift */,
 				3FB894A12DBA8D8E005ED179 /* WeatherReducer.swift */,
-				3FB8949A2DBA8D61005ED179 /* WeatherView.swift */,
 			);
 			path = WeatherFeature;
 			sourceTree = "<group>";
@@ -358,6 +361,7 @@
 		3FB894BC2DBB87E8005ED179 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3FB8949A2DBA8D61005ED179 /* WeatherView.swift */,
 				3FB894BD2DBB8801005ED179 /* WeatherMetric.swift */,
 				3F2D6E832DBECCE8000E7A43 /* WeatherMetricsView.swift */,
 				3F2D6E812DBECCD9000E7A43 /* WeatherMainInfoView.swift */,
@@ -582,6 +586,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FE91E892DBEEFBB00DC970C /* WeatherViewModel.swift in Sources */,
 				3FB894C72DBBA394005ED179 /* LocationRepository.swift in Sources */,
 				3F12F0CD2DBA716C00507202 /* DefaultDataTransferService.swift in Sources */,
 				3FB894B12DBA91BC005ED179 /* DateExtension.swift in Sources */,
@@ -597,9 +602,12 @@
 				3FB894E32DBBC4F8005ED179 /* StoryRepository.swift in Sources */,
 				3FB894C02DBB9F8C005ED179 /* ColorExtension.swift in Sources */,
 				3FB894D02DBBA8FD005ED179 /* LocationManagerDelegate.swift in Sources */,
+				3FE91E8B2DBEEFC900DC970C /* StoriesReducer.swift in Sources */,
 				3FB894E52DBBC51A005ED179 /* StoryService.swift in Sources */,
+				3FE91E8A2DBEEFC200DC970C /* WeatherReducer.swift in Sources */,
 				3F2D6E8C2DBED155000E7A43 /* UIDeviceExtension.swift in Sources */,
 				3FB894D72DBBB3E0005ED179 /* MockWeatherService.swift in Sources */,
+				3FE91E882DBEEFB200DC970C /* LocationReducer.swift in Sources */,
 				3F12F0D82DBA76F900507202 /* DataTransferService.swift in Sources */,
 				3FB894D92DBBB3F2005ED179 /* MockLocationService.swift in Sources */,
 				3FB894E92DBBC5E7005ED179 /* Story.swift in Sources */,

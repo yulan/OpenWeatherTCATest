@@ -13,7 +13,6 @@ struct MockWeatherService: WeatherRepositoryProtocol {
         for lat: Double,
         and lon: Double
     ) async throws -> WeatherResponseDTO {
-        // Return a mocked response for testing
         return WeatherResponseDTO(
             coord: CoordDTO(
                 lat: 48.893732,

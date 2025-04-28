@@ -39,9 +39,11 @@ OpenWeatherTCAApp/
 │   ├── AppReducer.swift
 │   ├── AppViews.swift
 │   ├── OpenWeatherTCATestApp.swfit
+│   ├── Info.plist
 │   ├── Resources/
 │   │   ├── Assets
-│   │   └── Info.plist
+│   │   ├── SplashScreen.swift
+│   │   └── LaunchScreen.storyboard
 ├── Core/
 │   ├── Infrastructure/
 │   │   └── Networking/
@@ -52,18 +54,23 @@ OpenWeatherTCAApp/
 │   │   ├── Entities/
 │   │   │    ├── Weather.swift
 │   │   │    └── Story.swift
-│   │   ├── UseCases/
-│   │   └── Networking/
-│   │       ├── DataTransferService.swift
-│   │       ├── FetchWeatherUseCase.swift
-│   │       └── FetchStoriesUseCase.swift
+│   │   └── UseCases/
+│   │        └── DataTransferService.swift
 │   ├── Presentation/
+│   │   ├── DeviceOrientation/
+│   │   │   └── DeviceOrientation.swift
+│   │   ├── DeviceOrientation/
+│   │   │   ├── WeatherSkeletonView.swift
+│   │   │   └── SkeletonView.swift
 │   │   ├── LocationFeature/
 │   │   │   └── LocationReducer.swift
 │   │   ├── WeatherFeature/
 │   │   │   ├── Views
 │   │   │   │   ├── WeatherView.swift
-│   │   │   │   └── WeatherMetric.swift
+│   │   │   │   ├── WeatherMetric.swift
+│   │   │   │   ├── WeatherMetricsView.swift
+│   │   │   │   ├── WeatherMainInfoView.swift
+│   │   │   │   └── RetryButton.swift
 │   │   │   ├── WeatherReducer.swift
 │   │   │   └── WeatherViewModel.swift
 │   │   └── StoriesFeature/
@@ -81,17 +88,66 @@ OpenWeatherTCAApp/
 │           │   ├── LocationManagerDelegate.swift
 │           │   └── LocationManager.swift
 │           ├── MockServices/
+│           │   ├── MockStoryService.swift
 │           │   ├── MockLocationService.swift
 │           │   └── MockWeatherService.swift
 │           ├── LocationService.swift
 │           ├── WeatherService.swift
 │           └── StoryService.swift
+├── Extention/
+│   ├── UIDeviceExtension/
+│   ├── DateExtension/
+│   └── ColorExtension/
+
 ```
 
 ### Layers:
 - **Core/Domain**: Business logic and core entities (e.g., `Weather`, `Story`).
 - **Core/Presentation**: SwiftUI views and reducers for state management and UI rendering.
 - **Core/Data**: Repositories and services for interacting with external APIs.
+
+---
+
+### How the Weather Data is Fetched and Displayed
+
+The app's weather feature works as follows:
+
+1. **Fetching Location**:
+   - The app uses **CoreLocation** to fetch the user's current location.
+   - If location permissions are denied, a user-friendly error message is displayed.
+
+2. **Fetching Weather Data**:
+   - The `WeatherService` interacts with the OpenWeatherMap API (or another weather API) to fetch weather data based on the user's latitude and longitude.
+
+3. **Mapping and Business Logic**:
+   - The raw weather data from the API is mapped into the `Weather` entity using a **Data Transfer Object (DTO)** (`WeatherResponseDTO`).
+   - The `FetchWeatherUseCase` handles business logic, such as formatting temperature and handling errors.
+
+4. **Displaying Weather Data**:
+   - The `WeatherReducer` manages the state of the weather screen, including loading, success, and error states.
+   - The weather information (e.g., temperature and city name) is displayed in the `WeatherView` using SwiftUI.
+
+---
+
+### How the Story View Was Implemented
+
+The Instagram story-like view feature was implemented as follows:
+
+1. **Fetching Images**:
+   - The `StoryService` fetches a collection of random city-related images from the Unsplash API.
+   - The images are mapped into `Story` entities for use in the UI.
+
+2. **State Management**:
+   - The `StoriesReducer` manages the state of the story view, including the current story, auto-progress status, and user interactions (e.g., swiping manually).
+
+3. **UI Implementation**:
+   - The `StoriesView` uses SwiftUI to render the story interface.
+   - A progress bar at the top indicates the auto-progress status of each image.
+   - Auto-progress is implemented with a timer that transitions to the next image every 3 seconds.
+   - Users can manually swipe between images, which resets the timer.
+
+4. **Dynamic Content**:
+   - The use of the Unsplash API ensures that the story view displays fresh and visually appealing images each time it is accessed.
 
 ---
 
