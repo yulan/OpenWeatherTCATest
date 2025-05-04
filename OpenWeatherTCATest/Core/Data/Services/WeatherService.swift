@@ -10,8 +10,7 @@ import ComposableArchitecture
 
 struct WeatherService: WeatherRepositoryProtocol {
     func fetchWeather(for lat: Double, and lon: Double) async throws -> WeatherResponseDTO {
-        let apiKey = APIKeys.openWeather
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(APIKeys.openWeather)&units=metric"
         
         guard let weatherUrl = URL(string: urlString) else {
             throw WeatherAPIClientError.invalidURL

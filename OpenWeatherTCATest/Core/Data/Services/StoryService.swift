@@ -12,7 +12,6 @@ struct StoryService: StoryRepositoryProtocol {
     func fetchRandomPhotoURLs(for city: String, with photosCount: Int) async throws -> [URL] {
         var urls: [URL] = []
         
-        let accessKey = "McCblZG0wBxB-8axocAtXw1XB0CVtxYBS_iLM4BrvYk"
         let baseUrlString = "https://api.unsplash.com/photos/random"
         
         let dataTransferService = DefaultDataTransferService(
@@ -31,7 +30,7 @@ struct StoryService: StoryRepositoryProtocol {
             }
 
             var request = URLRequest(url: requestUrl)
-            request.setValue("Client-ID \(accessKey)", forHTTPHeaderField: "Authorization")
+            request.setValue("Client-ID \(APIKeys.Unsplash)", forHTTPHeaderField: "Authorization")
 
             let result: Result<UnsplashPhoto, Error> = await dataTransferService.request(from: request)
 
