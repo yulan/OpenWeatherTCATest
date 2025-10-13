@@ -10,40 +10,45 @@ import ComposableArchitecture
 
 struct StoryService: StoryRepositoryProtocol {
     func fetchRandomPhotoURLs(for city: String, with photosCount: Int) async throws -> [URL] {
-        var urls: [URL] = []
-        
         let baseUrlString = "https://api.unsplash.com/photos/random"
-        
+
         let dataTransferService = DefaultDataTransferService(
             networkService: URLSessionHTTPClient(session: .shared)
         )
 
-        for _ in 0..<photosCount {
-            var components = URLComponents(string: baseUrlString)!
-            components.queryItems = [
-                URLQueryItem(name: "query", value: city),
-                URLQueryItem(name: "orientation", value: "portrait")
-            ]
+        // Use count parameter to fetch multiple photos in a single request
+        var components = URLComponents(string: baseUrlString)!
+        components.queryItems = [
+            URLQueryItem(name: "query", value: city),
+            URLQueryItem(name: "orientation", value: "portrait"),
+            URLQueryItem(name: "count", value: "\(photosCount)")
+        ]
 
-            guard let requestUrl = components.url else {
-                throw URLError(.badURL)
-            }
-
-            var request = URLRequest(url: requestUrl)
-            request.setValue("Client-ID \(APIKeys.Unsplash)", forHTTPHeaderField: "Authorization")
-
-            let result: Result<UnsplashPhoto, Error> = await dataTransferService.request(from: request)
-
-            switch result {
-            case let .success(photo):
-                if let url = URL(string: photo.urls.regular) {
-                    urls.append(url)
-                }
-            case let .failure(error):
-                throw mapError(error)
-            }
+        guard let requestUrl = components.url else {
+            throw URLError(.badURL)
         }
-        return urls
+
+        var request = URLRequest(url: requestUrl)
+        request.setValue("Client-ID \(APIKeys.Unsplash)", forHTTPHeaderField: "Authorization")
+
+        // When count > 1, API returns an array of photos
+        let result: Result<[UnsplashPhoto], Error> = await dataTransferService.request(from: request)
+
+        switch result {
+        case let .success(photos):
+            let urls = photos.compactMap { URL(string: $0.urls.regular) }
+#if DEBUG
+            print("📸 Unsplash API returned \(photos.count) photos (requested: \(photosCount))")
+            print("📸 Successfully parsed \(urls.count) URLs")
+            // If we got fewer photos than requested, it might be due to limited search results
+            if photos.count < photosCount {
+                print("⚠️ Warning: API returned fewer photos than requested. Query: '\(city)' may have limited results.")
+            }
+#endif
+            return urls
+        case let .failure(error):
+            throw mapError(error)
+        }
     }
     
     private func mapError(_ error: Error) -> StoryAPIClientError {
